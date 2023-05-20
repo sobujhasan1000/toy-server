@@ -34,11 +34,38 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/postanimals/:id', async(req,res)=>{
+      const id=req.params.id;
+      const quary={_id: new ObjectId(id)}
+      const result= await animalsCollection.findOne(quary);
+      res.send(result);
+    })
+
 app.post('/postanimals', async(req, res)=>{
   const newAnimals=req.body;
   console.log(newAnimals);
   const result= await animalsCollection.insertOne(newAnimals);
   res.send(result)
+})
+
+app.put('/postanimals/:id',async(req,res)=>{
+  const id=req.params.id;
+  const filter={_id: new ObjectId(id)};
+  const options={upsert:true}
+  const updatetoys=req.body;
+  const toys={
+       $set:{
+        name:updatetoys.name,
+        selarName:updatetoys.selarName,
+        price:updatetoys.price,
+        totalQuantity:updatetoys.totalQuantity,
+        rating:updatetoys.rating,
+        description:updatetoys.description
+       }
+  }
+  const result=await animalsCollection.updateOne(filter,toys,options)
+  res.send(result)
+  
 })
 
 app.delete('/postanimals/:id', async(req,res)=>{
