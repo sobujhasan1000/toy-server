@@ -33,7 +33,7 @@ async function run() {
       const result=await cursor.toArray();
       res.send(result)
     })
-
+  
     app.get('/postanimals/:id', async(req,res)=>{
       const id=req.params.id;
       const quary={_id: new ObjectId(id)}
